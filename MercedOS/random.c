@@ -3,7 +3,7 @@
 #include <time.h>
 
 int calculer_temps_aleatoire() {
-    return rand() % 11 + 15; // Génère un nombre entre 15 et 25 inclusivement
+    return rand() % 21 + 25; // Génère un nombre entre 25 et 45 inclusivement (entre 0 et 20 puis ajoute 25)	
 }
 
 int trouver_temps_minimum() {
@@ -11,6 +11,7 @@ int trouver_temps_minimum() {
 
     for (int i = 1; i < 10; i++) {
         int temps = calculer_temps_aleatoire();
+        //printf("%d\n",temps); // Pour voir tous les temps générés
         if (temps < min_temps) {
             min_temps = temps;
         }
