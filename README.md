@@ -1,3 +1,7 @@
+##le plan des dossiers : 
+https://gitmind.com/app/docs/f43xi91g
+
+##les consignes
 Projet Système TP Janvier 2024
 Le but du projet est de gérer un championnat de Formule 1.
 Le championnat se compose d’une vingtaine de grands prix (entre 20 et 25). Chaque grand prix se déroule sur un week-end, typiquement du vendredi au dimanche.
