@@ -1,7 +1,10 @@
 ## le plan des dossiers : 
 https://gitmind.com/app/docs/f43xi91g (uniquement copier/visualiser)
+
 pour pouvoir faire des modification :
+
 user : gaetan.carbonnelle1@gmail.com
+
 password : mercedesBest
 
 ## les consignes
