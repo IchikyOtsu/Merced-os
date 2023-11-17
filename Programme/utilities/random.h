@@ -31,7 +31,7 @@ float zdds(int nbrTours) {
 
 void genererTempsAleatoires(int min, int max, float temps[4]) {
     // Initialiser le générateur de nombres aléatoires
-    srand(time(NULL));
+    //srand(time(NULL));
 
     // Générer des temps aléatoires pour chaque secteur
     temps[0] = (rand() % (max - min + 1) + min) / 1000.0f; // S1
