@@ -13,7 +13,6 @@ int Initialize(){
         perror("ftok main");
         exit(1);
     }
-    printf("2)");
     int shmid;
     struct Joueur joueurs[MAX_LINES];  // Assurez-vous que MAX_LINES est défini
     int ligneIndex = 0;
@@ -23,14 +22,12 @@ int Initialize(){
         fprintf(stderr, "Erreur de lecture du fichier CSV.\n");
         return 1;  // Sortir de la fonction en cas d'erreur
     }
-	printf("3)");
     // Création du segment de mémoire partagée
     shmid = shmget(key, ligneIndex * sizeof(struct Joueur), 0666 | IPC_CREAT);
     if (shmid == -1) {
         perror("shmget");
         exit(1);
     }
-printf("4)");
     // Attachement de la mémoire partagée
     struct Joueur *resultats;
     resultats = (struct Joueur *)shmat(shmid, NULL, 0);
