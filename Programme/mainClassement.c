@@ -8,7 +8,7 @@
 int main() {
 
 
-    afficheClassement("P1");
+    afficherClassement(2);
 
 
     
