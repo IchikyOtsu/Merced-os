@@ -9,12 +9,14 @@
 #include "../utilities/pilote.h"
 #include "../utilities/random.h"
 #include "../utilities/drive.h"
+#include "../utilities/classement.h"
 
 // Définir NOMBRE_DE_TOURS quelque part dans votre code
 #define NOMBRE_DE_TOURS 60
 
 // Déclaration d'un sémaphore
 sem_t sharedMemorySemaphore;
+sem_t tourSemaphore;
 
 int sessionEssaisLibres(float nbrTours) {
     // Utilisez la même clé que dans le programme principal
@@ -43,9 +45,24 @@ int sessionEssaisLibres(float nbrTours) {
         perror("sem_init");
         exit(1);
     }
+    // Initialisation du sémaphore pour les tours
+    if (sem_init(&tourSemaphore, 0, 1) != 0) {
+        perror("sem_init");
+        exit(1);
+    }
+
+    // Initialisation de toutes les valeurs S1, S2, S3 et P1 à zéro pour chaque joueur
+    for (int i = 0; i < MAX_LINES; i++) {
+        resultats[i].S1P1 = 0.0;
+        resultats[i].S2P1 = 0.0;
+        resultats[i].S3P1 = 0.0;
+        resultats[i].P1 = 0.0;
+    }
 
     for (int tour = 0; tour < nbrTours; tour++) {
-        // faire rouler chaque joueur ses 60 tours et récupérer ses meilleurs temps
+        // Attendre que tous les processus soient prêts pour le nouveau tour
+        sem_wait(&tourSemaphore);
+
         for (int i = 0; i < MAX_LINES; i++) {
             pid_t pid = fork();
             if (pid == -1) {
@@ -57,33 +74,34 @@ int sessionEssaisLibres(float nbrTours) {
 
                 
                 
-
-                printf("\n------joueur %d -------\n", i + 1);
+                /*printf("\n------joueur %d -------\n", i + 1);
                 printf("ID du joueur : %d\n", resultats[i].nb);
                 printf("Nom du joueur : %s\n", resultats[i].Nom);
                 printf("temps S1 : %f\n", meilleursTemps[0]);
                 printf("temps S2 : %f\n", meilleursTemps[1]);
                 printf("temps S3 : %f\n", meilleursTemps[2]);
-                printf("temps T1 : %f\n", meilleursTemps[3]);
+                printf("temps T1 : %f\n", meilleursTemps[3]);*/
+                
 
                 
                 sem_wait(&sharedMemorySemaphore);
-                if (meilleursTemps[0] < resultats[i].S1P1) {
-                    // Mettez à jour le temps uniquement s'il est plus petit
+                if (resultats[i].S1P1 == 0.0 || meilleursTemps[0] < resultats[i].S1P1) {
+                    // Mettez à jour le temps
                     resultats[i].S1P1 = meilleursTemps[0];
                 }
-                if (meilleursTemps[1] < resultats[i].S2P1) {
-                    // Mettez à jour le temps uniquement s'il est plus petit
+                if (resultats[i].S2P1 == 0.0 || meilleursTemps[1] < resultats[i].S2P1) {
+                    // Mettez à jour le temps
                     resultats[i].S2P1 = meilleursTemps[1];
                 }
-                if (meilleursTemps[2] < resultats[i].S3P1) {
-                    // Mettez à jour le temps uniquement s'il est plus petit
+                if (resultats[i].S3P1 == 0.0 || meilleursTemps[2] < resultats[i].S3P1) {
+                    // Mettez à jour le temps
                     resultats[i].S3P1 = meilleursTemps[2];
                 }
-                if (meilleursTemps[3] < resultats[i].P1) {
-                    // Mettez à jour le temps uniquement s'il est plus petit
+                if (resultats[i].P1 == 0.0 || meilleursTemps[3] < resultats[i].P1) {
+                    // Mettez à jour le temps
                     resultats[i].P1 = meilleursTemps[3];
                 }
+
 
                 /*// Sauvegarde de ces informations dans la mémoire partagée
                 resultats[i].S1P1 = meilleursTemps[0];
@@ -97,12 +115,17 @@ int sessionEssaisLibres(float nbrTours) {
 
                 _exit(0);
             }
+            system("clear");
+            afficherClassement(resultats, MAX_LINES);
             srand(time(NULL));
-            usleep(650*1000);
+            sleep(1);
         }
 
         for (int i = 0; i < MAX_LINES; i++) {
             wait(NULL);
+        }
+        for (int i = 0; i < MAX_LINES; i++) {
+            sem_post(&tourSemaphore);
         }
     }
 
