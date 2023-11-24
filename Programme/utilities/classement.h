@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "pilote.h"
 
 // Fonction pour comparer deux pilotes en fonction d'une colonne spécifique
 int comparerJoueurs(const void *a, const void *b, int colonne) {
@@ -19,16 +19,22 @@ int comparerJoueurs(const void *a, const void *b, int colonne) {
     return 0;
 }
 
-void afficherClassement(struct Joueur *joueurs, int nbJoueurs, int colonne) {
-    // Copier les joueurs dans un nouveau tableau pour le tri
-    struct Joueur joueursTries[MAX_LINES];
-    memcpy(joueursTries, joueurs, sizeof(struct Joueur) * nbJoueurs);
+void afficherClassement(int colonne) {
+    struct Joueur joueurs[25];
+    int ligneIndex = 0;
+
+    // Lire les données des pilotes depuis le fichier CSV
+    if (lireFichierCSV("data/pilotes.csv", joueurs, &ligneIndex) != 0) {
+        fprintf(stderr, "Erreur de lecture du fichier CSV.\n");
+        return;  // Sortir de la fonction en cas d'erreur
+    }
+    memcpy(joueursTries, joueurs, sizeof(struct Joueur) * ligneIndex);
 
     // Tri des joueurs en fonction de la colonne spécifiée
-    qsort(joueursTries, nbJoueurs, sizeof(struct Joueur), comparerJoueurs, colonne);
+    qsort(joueursTries, ligneIndex, sizeof(struct Joueur), comparerJoueurs, colonne);
 
     // Affichage du classement
-    for (int i = 0; i < nbJoueurs; i++) {
+    for (int i = 0; i < ligneIndex; i++) {
         printf("Position %d: Pilote %s %s, Voiture %d, Temps : %.2f\n", 
                i + 1, joueursTries[i].Prenom, joueursTries[i].Nom, joueursTries[i].Num, joueursTries[i].P1);
     }
