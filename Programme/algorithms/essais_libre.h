@@ -1,46 +1,86 @@
 #ifndef ESSAIS_LIBRE_H
 #define ESSAIS_LIBRE_H
 #include "../utilities/pilote.h"
-#include "../utilities/randommili.h"
+#include "../utilities/random.h"
 #include "../utilities/drive.h"
 
+
 // Définir NOMBRE_DE_TOURS quelque part dans votre code
-#define NOMBRE_DE_TOURS 30
+
+
+
+
+#define NOMBRE_DE_TOURS 60
+
+
+
 int sessionEssaisLibres() {
-    struct Joueur joueurs[MAX_LINES];
-    int ligneIndex = 0;
 
-    // Lire les données des pilotes à partir du fichier CSV
-    if (lireFichierCSV("./data/pilotes.csv", joueurs, &ligneIndex) != 0) {
-        fprintf(stderr, "Erreur de lecture du fichier CSV.\n");
-        return 1 ;  // Sortir de la fonction en cas d'erreur
+        // Utilisez la même clé que dans le programme principal
+    key_t key = ftok("data/shmkeyfile", 65);
+    if (key == -1) {
+        perror("ftok main");
+        exit(1);
     }
-    srand(time(NULL)); 
-    //printf("%d",ligneIndex);
-    // Simuler les sessions d'essais libres pour chaque pilote
-    for (int i = 0; i < ligneIndex; i++) {
-        // Ici, on peut simuler un certain nombre de tours pour chaque pilote
-        // et enregistrer leur meilleur temps dans la structure Joueur
-        
-            float temps = drive(NOMBRE_DE_TOURS);
-            printf("%f",temps);
-            joueurs[i].P1 = temps;
-            
-                
-            
-        
 
-        // Afficher les résultats pour chaque pilote
-        printf("Pilote %s %s (Voiture %d) - Meilleur temps en essais libres : %.3f secondes\n", 
-        joueurs[i].Prenom, joueurs[i].Nom, joueurs[i].Num, joueurs[i].P1);
+    // Obtenez l'identifiant de la mémoire partagée
+    int shmid = shmget(key, 0, 0); // 0 pour obtenir la taille actuelle
+    if (shmid == -1) {
+        perror("shmget");
+        exit(1);
+    }
 
+    // Attachement de la mémoire partagée
+    
+    struct Joueur *resultats = (struct Joueur *)shmat(shmid, NULL, 0);
+    if ((intptr_t)resultats == -1) {
+        perror("shmat");
+        exit(1);
     }
-    if (sauvegarderFichierCSV("data/pilotes.csv", joueurs, ligneIndex) != 0) {
-        return 1;
-    }
+    //printf("test mémoire partager%s\n", resultats[2].Nom);
+    
+    
+    
     
 
-    // Vous pouvez choisir de sauvegarder les résultats dans le fichier CSV ou dans un autre fichier
+    // faire rouller chaque joueur ses 60 tours et récuperer ses meilleurs temps dans un tableau (S1, S2, S3 et le meilleur tour)
+    for (int i = 0; i < MAX_LINES; i++) {
+    
+    	
+    	float *meilleursTemps = drive(60);
+    	
+    	printf("\n------joueur %d -------\n",i);
+    	printf("ID du joueur : %d\n", resultats[i].nb);
+        printf("Nom du joueur : %s\n", resultats[i].Nom);
+    	printf("temps S1 : %f\n", meilleursTemps[0]);  
+    	printf("temps S2 : %f\n", meilleursTemps[1]);
+    	printf("temps S3 : %f\n", meilleursTemps[2]);
+    	printf("temps T1 : %f\n", meilleursTemps[3]);
+    	
+    	
+    	
+    	//sauve ces inforamtion dans la mémoire partagée
+	resultats[i].S1P1 = meilleursTemps[0];
+	resultats[i].S2P1 = meilleursTemps[1];
+	resultats[i].S3P1 = meilleursTemps[2];
+	resultats[i].P1 = meilleursTemps[3];
+	
+	
+	// Sauvegarde dans le fichier CSV
+	if (sauvegarderFichierCSV("data/pilotes.csv", resultats, i+1) != 0) {
+        	fprintf(stderr, "Erreur de sauvegarde du fichier CSV.\n");
+        	return 1;
+    	}
+    }
+    
+    
+    
+        // Détacher le segment \\est ce qu'on doit le faire à chaque fois que l'on lance la mémoire partager car j'ai lu que cela décrémente le liens ou bien en le fesant une seule fois cela suffit pour la suprimer ?
+    if (shmdt(resultats) == -1) {
+        perror("shmdt");
+        exit(1);
+    }
+    
 }
 
 

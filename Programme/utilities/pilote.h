@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_LINES 100  
+#define MAX_LINES 22
 #define MAX_FIELDS 38 
 
 struct Joueur {
@@ -69,6 +69,7 @@ L'utilisation de fprintf pour écrire dans le fichier est correcte.*/
 
 int lireFichierCSV(const char *nomFichier, struct Joueur joueurs[], int *ligneIndex) {
     FILE *fichier = fopen(nomFichier, "r");
+    
 
     if (fichier == NULL) {
         perror("Erreur lors de l'ouverture du fichier");
@@ -220,8 +221,8 @@ int lireFichierCSV(const char *nomFichier, struct Joueur joueurs[], int *ligneIn
         }
         (*ligneIndex)++;
     }
-
     fclose(fichier);
+    
     return 0;
 }
 

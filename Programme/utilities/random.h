@@ -28,19 +28,21 @@ float zdds(int nbrTours) {
     return min_temps;
 }
 
-
 void genererTempsAleatoires(int min, int max, float temps[4]) {
-    // Initialiser le générateur de nombres aléatoires
-    //srand(time(NULL));
+    
 
     // Générer des temps aléatoires pour chaque secteur
-    temps[0] = (rand() % (max - min + 1) + min) / 1000.0f; // S1
-    temps[1] = (rand() % (max - min + 1) + min) / 1000.0f; // S2
-    temps[2] = (rand() % (max - min + 1) + min) / 1000.0f; // S3
+
+    temps[0] = rand() % (max - min + 1) + min;
+
+    temps[1] =  rand() % (max - min + 1) + min;
+    temps[2] = rand() % (max - min + 1) + min;
 
     // Calculer le temps total du tour
     temps[3] = temps[0] + temps[1] + temps[2]; // Tour
 }
+
+
 
 
 
