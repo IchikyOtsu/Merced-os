@@ -83,5 +83,11 @@ int main() {
 			break;
 	}
 	
+	//elemver la mémoire partgée
+	if (shmdt(resultats) == -1) {
+	        perror("shmdt");
+	        exit(1);
+	}
+
 	return 0;
 }

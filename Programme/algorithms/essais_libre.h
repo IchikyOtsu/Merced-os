@@ -73,14 +73,7 @@ int sessionEssaisLibres() {
     	}
     }
     
-    
-    
-        // Détacher le segment \\est ce qu'on doit le faire à chaque fois que l'on lance la mémoire partager car j'ai lu que cela décrémente le liens ou bien en le fesant une seule fois cela suffit pour la suprimer ?
-    if (shmdt(resultats) == -1) {
-        perror("shmdt");
-        exit(1);
-    }
-    
+     
 }
 
 
