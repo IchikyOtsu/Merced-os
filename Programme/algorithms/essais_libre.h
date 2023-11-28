@@ -124,9 +124,8 @@ int sessionEssaisLibres(float nbrTours) {
         for (int i = 0; i < MAX_LINES; i++) {
             wait(NULL);
         }
-        for (int i = 0; i < MAX_LINES; i++) {
-            sem_post(&tourSemaphore);
-        }
+        sem_post(&tourSemaphore);
+        
     }
 
     // Sauvegarde dans le fichier CSV
@@ -143,6 +142,7 @@ int sessionEssaisLibres(float nbrTours) {
 
     // Détruire le sémaphore
     sem_destroy(&sharedMemorySemaphore);
+    sem_destroy(&tourSemaphore);
 }
 
 #endif
