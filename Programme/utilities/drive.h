@@ -4,7 +4,7 @@
 #include "random.h" 
 #include "pilote.h" 
 
-float *drive(float nbrTours ){
+float *drive(){
 
 
     //initialisation des meilleurs temps à 0
@@ -13,8 +13,7 @@ float *drive(float nbrTours ){
     	meilleursTemps[i] = 0;
     }
     
-    //faire faire pour le joueurs les X tours et garder le meilleur (S1, S2, S3 et meilleur tour)
-    for (int tour = 0; tour < nbrTours; tour++) {
+
 
 
 	//génerére le temps de ce tour dans un tableau
@@ -35,10 +34,10 @@ float *drive(float nbrTours ){
         	meilleursTemps[3] = temps[3];
         }
 
-    }
 
 
     return meilleursTemps;
 }
 
 #endif
+

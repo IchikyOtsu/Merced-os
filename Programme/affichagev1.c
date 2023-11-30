@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "pilote.h"
 
 struct Joueur {
     int nb;
@@ -16,7 +15,6 @@ struct Joueur {
     int adandon;
     int stand;
 };
-
 void afficherEnTete() {
     printf("\033[1;35m");  // Violet et gras
     printf(" ||\\\\     //|| ||||||||  __      .__  __        .__ __________        \n");
@@ -43,7 +41,7 @@ void q1(struct Joueur joueurs[], int taille) {
     printf("\033[1;32m");  // Vert et en gras pour les 15 premières lignes
     printf("%-4s | %-4s | %-15s | %-15s | %-20s | %-20s | %-5s | %-5s | %-5s | %-5s | %-5s\n",
            "Num", "Nb", "Prenom", "Nom", "Team", "Nationalite", "S1P1", "S2P1", "S3P1", "TP1", "GAP");
-    
+    printf("\033[0m");  // Réinitialise le style
 
     for (int i = 0; i < 15; ++i) {
         printf("%-4d | %-4d | %-15s | %-15s | %-20s | %-20s | %-5d | %-5d | %-5d | %-5d | %-5d\n",
@@ -51,7 +49,6 @@ void q1(struct Joueur joueurs[], int taille) {
                joueurs[i].Nationalite, joueurs[i].S1P1, joueurs[i].S2P1,
                joueurs[i].S3P1, joueurs[i].TP1, joueurs[i].TP1 - joueurs[i > 0 ? i - 1 : 0].TP1);
     }
-    printf("\033[0m");  // Réinitialise le style
 
     printf("\n\033[1;31m");  // Rouge et en gras pour les 5 dernières lignes
     for (int i = 15; i < taille; ++i) {
@@ -76,7 +73,7 @@ void q2(struct Joueur joueurs[], int taille) {
     printf("\033[1;32m");  // Vert et en gras pour les 10 premières lignes
     printf("%-4s | %-4s | %-15s | %-15s | %-20s | %-20s | %-5s | %-5s | %-5s | %-5s | %-5s\n",
            "Num", "Nb", "Prenom", "Nom", "Team", "Nationalite", "S1P1", "S2P1", "S3P1", "TP1", "GAP");
-    
+    printf("\033[0m");  // Réinitialiser le style
 
     for (int i = 0; i < 10; ++i) {
         printf("%-4d | %-4d | %-15s | %-15s | %-20s | %-20s | %-5d | %-5d | %-5d | %-5d | %-5d\n",
@@ -84,7 +81,6 @@ void q2(struct Joueur joueurs[], int taille) {
                joueurs[i].Nationalite, joueurs[i].S1P1, joueurs[i].S2P1,
                joueurs[i].S3P1, joueurs[i].TP1, joueurs[i].TP1 - joueurs[i > 0 ? i - 1 : 0].TP1);
     }
-    printf("\033[0m");  // Réinitialiser le style
 
     printf("\n\033[1;31m");  // Rouge et en gras pour les 10 dernières lignes
     for (int i = taille - 10; i < taille; ++i) {

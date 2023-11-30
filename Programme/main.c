@@ -7,12 +7,12 @@
 #include "algorithms/essais_libre.h"
 
 int Initialize(){
-    printf("1)");
     key_t key = ftok("data/shmkeyfile", 65); // générere une clé unique
         if (key == -1) {
         perror("ftok main");
         exit(1);
     }
+    
     int shmid;
     struct Joueur joueurs[MAX_LINES];  // Assurez-vous que MAX_LINES est défini
     int ligneIndex = 0;
@@ -22,12 +22,14 @@ int Initialize(){
         fprintf(stderr, "Erreur de lecture du fichier CSV.\n");
         return 1;  // Sortir de la fonction en cas d'erreur
     }
+
     // Création du segment de mémoire partagée
     shmid = shmget(key, ligneIndex * sizeof(struct Joueur), 0666 | IPC_CREAT);
     if (shmid == -1) {
         perror("shmget");
         exit(1);
     }
+
     // Attachement de la mémoire partagée
     struct Joueur *resultats;
     resultats = (struct Joueur *)shmat(shmid, NULL, 0);
@@ -67,11 +69,7 @@ int main() {
 	switch (choice){
 		case 1:
 			printf("Practice session\n");
-<<<<<<< HEAD
 			sessionEssaisLibres(5);
-=======
-			sessionEssaisLibres();
->>>>>>> parent of 3b2fc01 (Changement de la logique des tours pour y inclure l'affichage et les fork.)
 			break;
 		case 2:
 			printf("The qualifications (Q1/Q2/Q3)\n");
@@ -84,11 +82,5 @@ int main() {
 			break;
 	}
 	
-	//elemver la mémoire partgée
-	if (shmdt(resultats) == -1) {
-	        perror("shmdt");
-	        exit(1);
-	}
-
 	return 0;
 }
