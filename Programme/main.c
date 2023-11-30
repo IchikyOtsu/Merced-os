@@ -67,7 +67,7 @@ int main() {
 	switch (choice){
 		case 1:
 			printf("Practice session\n");
-			sessionEssaisLibres();
+			sessionEssaisLibres(5);
 			break;
 		case 2:
 			printf("The qualifications (Q1/Q2/Q3)\n");
