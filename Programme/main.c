@@ -67,7 +67,11 @@ int main() {
 	switch (choice){
 		case 1:
 			printf("Practice session\n");
+<<<<<<< HEAD
 			sessionEssaisLibres(5);
+=======
+			sessionEssaisLibres();
+>>>>>>> parent of 3b2fc01 (Changement de la logique des tours pour y inclure l'affichage et les fork.)
 			break;
 		case 2:
 			printf("The qualifications (Q1/Q2/Q3)\n");

@@ -41,6 +41,41 @@ int sessionEssaisLibres() {
     
     
     
+<<<<<<< HEAD
+=======
+    
+
+    // faire rouller chaque joueur ses 60 tours et récuperer ses meilleurs temps dans un tableau (S1, S2, S3 et le meilleur tour)
+    for (int i = 0; i < MAX_LINES; i++) {
+    
+    	
+    	float *meilleursTemps = drive(60);
+    	
+    	printf("\n------joueur %d -------\n",i);
+    	printf("ID du joueur : %d\n", resultats[i].nb);
+        printf("Nom du joueur : %s\n", resultats[i].Nom);
+    	printf("temps S1 : %f\n", meilleursTemps[0]);  
+    	printf("temps S2 : %f\n", meilleursTemps[1]);
+    	printf("temps S3 : %f\n", meilleursTemps[2]);
+    	printf("temps T1 : %f\n", meilleursTemps[3]);
+    	
+    	
+    	
+    	//sauve ces inforamtion dans la mémoire partagée
+	resultats[i].S1P1 = meilleursTemps[0];
+	resultats[i].S2P1 = meilleursTemps[1];
+	resultats[i].S3P1 = meilleursTemps[2];
+	resultats[i].P1 = meilleursTemps[3];
+	
+	
+	// Sauvegarde dans le fichier CSV
+	if (sauvegarderFichierCSV("data/pilotes.csv", resultats, i+1) != 0) {
+        	fprintf(stderr, "Erreur de sauvegarde du fichier CSV.\n");
+        	return 1;
+    	}
+    }
+    
+>>>>>>> parent of 3b2fc01 (Changement de la logique des tours pour y inclure l'affichage et les fork.)
     
 
     // faire rouller chaque joueur ses 60 tours et récuperer ses meilleurs temps dans un tableau (S1, S2, S3 et le meilleur tour)
