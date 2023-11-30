@@ -21,12 +21,12 @@ void afficherEnTete() {
 }
 
 
-void q1(struct Joueur *resultats, int joueurs_qui_roullent) {
+void p1(struct Joueur *resultats, int joueurs_qui_roullent) {
 	
     
     printf("\033[1;33m");  // Jaune et  gras pour l'en-tête
     printf("%-8s | %-4s | %-15s | %-15s | %-20s | %-20s | %-13s | %-13s | %-13s | %-13s | %-13s\n",
-           "position", "Num", "Prenom", "Nom", "Team", "Nationalite", "S1", "S2", "S3", "TOUR", "GAP");
+           "position", "Num", "Prenom", "Nom", "Team", "Nationalite", "S1", "S2", "S3", "TOUR : P1", "GAP");
     printf("\033[0m");  // Réinitialiser le style
 
     printf("\033[1;34m");  // Bleu et en gras pour la ligne de séparation
@@ -35,119 +35,90 @@ void q1(struct Joueur *resultats, int joueurs_qui_roullent) {
     printf("\033[1;32m");  // Vert et en gras pour les 15 premières lignes
 
     for (int i = 0; i < joueurs_qui_roullent; ++i) {
-        printf("%-8d | %-4d | %-15s | %-15s | %-20s | %-20s | %-13f | %-13f | %-13f | %-13f | /\n",
+        printf("%-8d | %-4d | %-15s | %-15s | %-20s | %-20s | %-13f | %-13f | %-13f | %-13f | %-13f\n",
                i+1, resultats[i].Num, resultats[i].Prenom, resultats[i].Nom, resultats[i].Team,
                resultats[i].Nationalite, resultats[i].S1P1, resultats[i].S2P1,
-               resultats[i].S3P1, resultats[i].P1);
+               resultats[i].S3P1, resultats[i].P1, resultats[0].P1-resultats[i].P1);
     }
     printf("\033[0m");  // Réinitialise le style
 
     printf("\n\033[1;31m");  // Rouge et en gras pour les 5 dernières lignes
     for (int i = joueurs_qui_roullent; i < MAX_LINES; ++i) {
-        printf("%-8d | %-4d | %-15s | %-15s | %-20s | %-20s | %-13f | %-13f | %-13f | %-13f | /\n",
+        printf("%-8d | %-4d | %-15s | %-15s | %-20s | %-20s | %-13f | %-13f | %-13f | %-13f | %-13f\n",
                i+1, resultats[i].Num, resultats[i].Prenom, resultats[i].Nom, resultats[i].Team,
                resultats[i].Nationalite, resultats[i].S1P1, resultats[i].S2P1,
-               resultats[i].S3P1, resultats[i].P1);
+               resultats[i].S3P1, resultats[i].P1, resultats[0].P1-resultats[i].P1);
     }
     printf("\033[0m");  // Réinitialiser le style
 }
-/*
-void q2(struct Joueur joueurs[], int taille) {
-    afficherEnTete();
-    printf("\033[1;33m");  // Jaune et en gras pour l'en-tête
-    printf("%-4s | %-4s | %-15s | %-15s | %-20s | %-20s | %-5s | %-5s | %-5s | %-5s | %-5s\n",
-           "Num", "Nb", "Prenom", "Nom", "Team", "Nationalite", "S1P1", "S2P1", "S3P1", "TP1", "GAP");
-    printf("\033[0m");  // Réinitialiser le style
 
-    printf("\033[1;34m");  // Bleu et en gras pour la ligne de séparation
-    printf("------------------------------------------------------------------------------------------------------------------------------------\n");
-    printf("\033[0m");  // Réinitialiser le style
-    printf("\033[1;32m");  // Vert et en gras pour les 10 premières lignes
-    printf("%-4s | %-4s | %-15s | %-15s | %-20s | %-20s | %-5s | %-5s | %-5s | %-5s | %-5s\n",
-           "Num", "Nb", "Prenom", "Nom", "Team", "Nationalite", "S1P1", "S2P1", "S3P1", "TP1", "GAP");
+
+void p2(struct Joueur *resultats, int joueurs_qui_roullent) {
+	
     
-
-    for (int i = 0; i < 10; ++i) {
-        printf("%-4d | %-4d | %-15s | %-15s | %-20s | %-20s | %-5d | %-5d | %-5d | %-5d | %-5d\n",
-               joueurs[i].Num, joueurs[i].nb, joueurs[i].Prenom, joueurs[i].Nom, joueurs[i].Team,
-               joueurs[i].Nationalite, joueurs[i].S1P1, joueurs[i].S2P1,
-               joueurs[i].S3P1, joueurs[i].TP1, joueurs[i].TP1 - joueurs[i > 0 ? i - 1 : 0].TP1);
-    }
-    printf("\033[0m");  // Réinitialiser le style
-
-    printf("\n\033[1;31m");  // Rouge et en gras pour les 10 dernières lignes
-    for (int i = taille - 10; i < taille; ++i) {
-        printf("%-4d | %-4d | %-15s | %-15s | %-20s | %-20s | %-5d | %-5d | %-5d | %-5d | %-5d\n",
-               joueurs[i].Num, joueurs[i].nb, joueurs[i].Prenom, joueurs[i].Nom, joueurs[i].Team,
-               joueurs[i].Nationalite, joueurs[i].S1P1, joueurs[i].S2P1,
-               joueurs[i].S3P1, joueurs[i].TP1, joueurs[i].TP1 - joueurs[i > 0 ? i - 1 : 0].TP1);
-    }
-    printf("\033[0m");  // Réinitialiser le style
-}
-
-void q3(struct Joueur joueurs[], int taille) {
-    int gap[taille];
-    gap[0] = joueurs[0].TP1;
-    afficherEnTete();
-    printf("\033[1;33m");  // Jaune et en gras pour l'en-tête
-    printf("%-4s | %-4s | %-15s | %-15s | %-20s | %-20s | %-5s | %-5s | %-5s | %-5s | %-5s\n",
-           "Num", "Nb", "Prenom", "Nom", "Team", "Nationalite", "S1P1", "S2P1", "S3P1", "TP1", "GAP");
+    printf("\033[1;33m");  // Jaune et  gras pour l'en-tête
+    printf("%-8s | %-4s | %-15s | %-15s | %-20s | %-20s | %-13s | %-13s | %-13s | %-13s | %-13s\n",
+           "position", "Num", "Prenom", "Nom", "Team", "Nationalite", "S1", "S2", "S3", "TOUR : P2", "GAP");
     printf("\033[0m");  // Réinitialiser le style
 
     printf("\033[1;34m");  // Bleu et en gras pour la ligne de séparation
     printf("------------------------------------------------------------------------------------------------------------------------------------\n");
     printf("\033[0m");  // Réinitialiser le style
-    for (int i = 0; i < taille; ++i) {
-        // Calculer le GAP à partir du deuxième élément
-        if (i > 0) {
-            gap[i] = joueurs[i].TP1 - joueurs[i - 1].TP1;
-        }
+    printf("\033[1;32m");  // Vert et en gras pour les 15 premières lignes
 
-        printf("%-4d | %-4d | %-15s | %-15s | %-20s | %-20s | %-5d | %-5d | %-5d | %-5d | %-5d\n",
-               joueurs[i].Num, joueurs[i].nb, joueurs[i].Prenom, joueurs[i].Nom, joueurs[i].Team,
-               joueurs[i].Nationalite, joueurs[i].S1P1, joueurs[i].S2P1,
-               joueurs[i].S3P1, joueurs[i].TP1, gap[i]);
+    for (int i = 0; i < joueurs_qui_roullent; ++i) {
+        printf("%-8d | %-4d | %-15s | %-15s | %-20s | %-20s | %-13f | %-13f | %-13f | %-13f | %-13f\n",
+               i+1, resultats[i].Num, resultats[i].Prenom, resultats[i].Nom, resultats[i].Team,
+               resultats[i].Nationalite, resultats[i].S1P2, resultats[i].S2P2,
+               resultats[i].S3P2, resultats[i].P2, resultats[0].P2-resultats[i].P2);
     }
+    printf("\033[0m");  // Réinitialise le style
+
+    printf("\n\033[1;31m");  // Rouge et en gras pour les 5 dernières lignes
+    for (int i = joueurs_qui_roullent; i < MAX_LINES; ++i) {
+        printf("%-8d | %-4d | %-15s | %-15s | %-20s | %-20s | %-13f | %-13f | %-13f | %-13f | %-13f\n",
+               i+1, resultats[i].Num, resultats[i].Prenom, resultats[i].Nom, resultats[i].Team,
+               resultats[i].Nationalite, resultats[i].S1P2, resultats[i].S2P2,
+               resultats[i].S3P2, resultats[i].P2, resultats[0].P2-resultats[i].P2);
+    }
+    printf("\033[0m");  // Réinitialiser le style
 }
 
-
-void p(struct Joueur joueurs[], int taille) {
-    int gap[taille];
-    gap[0] = joueurs[0].TP1;
-    afficherEnTete();
-    printf("\033[1;33m");  // Jaune et en gras pour l'en-tête
-    printf("%-4s | %-4s | %-15s | %-15s | %-20s | %-20s | %-5s | %-5s | %-5s | %-5s | %-5s\n",
-           "Num", "Nb", "Prenom", "Nom", "Team", "Nationalite", "S1P1", "S2P1", "S3P1", "TP1", "GAP");
+void p3(struct Joueur *resultats, int joueurs_qui_roullent) {
+	
+    
+    printf("\033[1;33m");  // Jaune et  gras pour l'en-tête
+    printf("%-8s | %-4s | %-15s | %-15s | %-20s | %-20s | %-13s | %-13s | %-13s | %-13s | %-13s\n",
+           "position", "Num", "Prenom", "Nom", "Team", "Nationalite", "S1", "S2", "S3", "TOUR : P1", "GAP");
     printf("\033[0m");  // Réinitialiser le style
 
     printf("\033[1;34m");  // Bleu et en gras pour la ligne de séparation
     printf("------------------------------------------------------------------------------------------------------------------------------------\n");
     printf("\033[0m");  // Réinitialiser le style
-    for (int i = 0; i < taille; ++i) {
-        // Calculer le GAP à partir du deuxième élément
-        if (i > 0) {
-            gap[i] = joueurs[i].TP1 - joueurs[i - 1].TP1;
-        }
+    printf("\033[1;32m");  // Vert et en gras pour les 15 premières lignes
 
-        printf("%-4d | %-4d | %-15s | %-15s | %-20s | %-20s | %-5d | %-5d | %-5d | %-5d | %-5d\n",
-               joueurs[i].Num, joueurs[i].nb, joueurs[i].Prenom, joueurs[i].Nom, joueurs[i].Team,
-               joueurs[i].Nationalite, joueurs[i].S1P1, joueurs[i].S2P1,
-               joueurs[i].S3P1, joueurs[i].TP1, gap[i]);
+    for (int i = 0; i < joueurs_qui_roullent; ++i) {
+        printf("%-8d | %-4d | %-15s | %-15s | %-20s | %-20s | %-13f | %-13f | %-13f | %-13f | %-13f\n",
+               i+1, resultats[i].Num, resultats[i].Prenom, resultats[i].Nom, resultats[i].Team,
+               resultats[i].Nationalite, resultats[i].S1P3, resultats[i].S2P3,
+               resultats[i].S3P3, resultats[i].P3, resultats[0].P3-resultats[i].P3);
     }
+    printf("\033[0m");  // Réinitialise le style
+
+    printf("\n\033[1;31m");  // Rouge et en gras pour les 5 dernières lignes
+    for (int i = joueurs_qui_roullent; i < MAX_LINES; ++i) {
+        printf("%-8d | %-4d | %-15s | %-15s | %-20s | %-20s | %-13f | %-13f | %-13f | %-13f | %-13f\n",
+               i+1, resultats[i].Num, resultats[i].Prenom, resultats[i].Nom, resultats[i].Team,
+               resultats[i].Nationalite, resultats[i].S1P3, resultats[i].S2P3,
+               resultats[i].S3P3, resultats[i].P3, resultats[0].P3-resultats[i].P3);
+    }
+    printf("\033[0m");  // Réinitialiser le style
 }
 
-void q1 (){
-	printf("aaaaaa\n");
-}
-*/
 
 
-void q2 (){
-	printf("eeeee\n");
-}
 
-
-int affichage(struct Joueur *resultats, char *part, int joueurs_qui_roullent) {
+int affichage(struct Joueur *resultats, char *que_afficher, int joueurs_qui_roullent) {
 	//printf("%d\n", resultats[1].S1P1);
 	
 
@@ -155,13 +126,16 @@ int affichage(struct Joueur *resultats, char *part, int joueurs_qui_roullent) {
     
 
 
-    if (strcmp(part, "q1") == 0) {
-        q1(resultats, joueurs_qui_roullent);
+    if (strcmp(que_afficher, "p1") == 0) {
+        p1(resultats, joueurs_qui_roullent);
         
-    } else if (strcmp(part, "q2") == 0) {
-    	q2();
+    } else if (strcmp(que_afficher, "p2") == 0) {
+    	p2(resultats, joueurs_qui_roullent);
 
-    } else {
+    } else if (strcmp(que_afficher, "p3") == 0) {
+    	p3(resultats, joueurs_qui_roullent);
+
+    }  else {
         printf("Mauvais appel du type d'affichage\n");
     }
 

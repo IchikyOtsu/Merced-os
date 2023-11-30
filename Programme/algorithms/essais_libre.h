@@ -57,13 +57,16 @@ int sessionEssaisLibres(float nbrTours) {
     for (int tour = 0; tour < nbrTours; tour++) {
         // Attendre que tous les processus soient prêts pour le nouveau tour
         sem_wait(&tourSemaphore);
+        
         for (int i = 0; i < MAX_LINES; i++) {
             pid_t pid = fork();
+
             if (pid == -1) {
                 // Gestion d'erreur
                 perror("fork failed");
                 exit(1);
             } else if (pid == 0) {
+            	
                 float *meilleursTemps = drive(60);
                 
                 
@@ -79,19 +82,19 @@ int sessionEssaisLibres(float nbrTours) {
                 sem_wait(&sharedMemorySemaphore);
                 if (resultats[i].S1P1 == 0.0 || meilleursTemps[0] < resultats[i].S1P1) {
                     // Mettez à jour le temps
-                    resultats[i].S1P1 = meilleursTemps[0];
+                    resultats[i].S1P1 = meilleursTemps[0]/1000;
                 }
                 if (resultats[i].S2P1 == 0.0 || meilleursTemps[1] < resultats[i].S2P1) {
                     // Mettez à jour le temps
-                    resultats[i].S2P1 = meilleursTemps[1];
+                    resultats[i].S2P1 = meilleursTemps[1]/1000;
                 }
                 if (resultats[i].S3P1 == 0.0 || meilleursTemps[2] < resultats[i].S3P1) {
                     // Mettez à jour le temps
-                    resultats[i].S3P1 = meilleursTemps[2];
+                    resultats[i].S3P1 = meilleursTemps[2]/1000;
                 }
                 if (resultats[i].P1 == 0.0 || meilleursTemps[3] < resultats[i].P1) {
                     // Mettez à jour le temps
-                    resultats[i].P1 = meilleursTemps[3];
+                    resultats[i].P1 = meilleursTemps[3]/1000;
                     
                 }
                 /*// Sauvegarde de ces informations dans la mémoire partagée
@@ -102,12 +105,14 @@ int sessionEssaisLibres(float nbrTours) {
                 */
                 // Libérez le sémaphore après avoir effectué les opérations sur la mémoire partagée
                 sem_post(&sharedMemorySemaphore);
-                _exit(0);
+                _exit(1);
             }
             system("clear");
             
+            printf("----%d-------------%f", resultats[i].Num, resultats[i].P1 );
+            
             int joueurs_qui_roullent = 22;
-            char *que_afficher = "q1";
+            char *que_afficher = "p1";
             afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
             
             srand(time(NULL));
