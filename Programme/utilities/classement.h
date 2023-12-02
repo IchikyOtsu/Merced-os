@@ -24,11 +24,20 @@ int comparerResultats(const void *a, const void *b) {
 }
 
 void afficherClassement(struct Joueur *resultats, int joueurs_qui_roullent, char *que_afficher) {
-	// Triez les résultats en utilisant la fonction de comparaison
-	qsort(resultats, MAX_LINES, sizeof(struct Joueur), comparerResultats);
-	
+	struct Joueur *temp = malloc(MAX_LINES * sizeof(struct Joueur));
+    if (temp == NULL) {
+        perror("malloc failed");
+        exit(1);
+    }
 
-    	affichage(resultats, que_afficher, joueurs_qui_roullent);
+    // Copier les données dans la copie temporaire
+    memcpy(temp, resultats, MAX_LINES * sizeof(struct Joueur));
+
+    // Trier la copie temporaire
+    qsort(temp, MAX_LINES, sizeof(struct Joueur), comparerResultats);
+
+    // Afficher la copie temporaire
+    affichage(temp, que_afficher, joueurs_qui_roullent);
 
 }
 

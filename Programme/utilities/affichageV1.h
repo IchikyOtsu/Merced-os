@@ -8,15 +8,16 @@
 
 
 void afficherEnTete() {
-    printf("\033[1;35m");  // Violet et gras
-    printf(" ||\\\\     //|| ||||||||  __      .__  __        .__ __________        \n");
-    printf(" || \\\\   // || ||       \\__ __|__|/  |_  ____ |__|\\______   \\_____  \n");
-    printf(" ||  \\\\=//  || ||=====  \\    |  |  \\  \\   __\\/ __ \\|  ||     ___/\\__  \\ \n");
-    printf(" ||         || ||=====   /  ||  | \\  ___/|  ||    |     / __ \\_\n");
-    printf(" ||         || ||        >__||____|    (____  /\\_\n");
-    printf(" ||         || ||||||||  |__|             \\/                   \\/    \n");
+    printf("\033[1;35m\n");  // Violet et gras
+    printf(" /======================================================================/\n");
+    printf(" ||      .-.                                   __                  .-. ||\n");
+    printf(" ||       .;|/:                              .'|/.;;.    .-.;;;.`-'    ||\n");
+    printf(" ||      .;   :  .-.   .;.::..-.   .-.  .-..'  ';;  `;`-' ;;  (_)      ||\n");
+    printf(" ||     .;    :.;.-'   .;   ;    .;.-' :   ;   ;;    :.   `;;;.        ||\n");
+    printf(" || .:'.;     : `:::'.;'    `;;;;'`:::'`:::'`.;;     ;'   _   `:       ||\n");
+    printf(" ||(__.'      `.                              `;.__.'    (_.;;;'       ||\n");
+    printf(" /======================================================================/\n");
     printf("\n");
-
     printf("\033[0m");  // Réinitialise le style
 }
 
@@ -119,7 +120,7 @@ void p3(struct Joueur *resultats, int joueurs_qui_roullent) {
 
 
 int affichage(struct Joueur *resultats, char *que_afficher, int joueurs_qui_roullent) {
-	//printf("%d\n", resultats[1].S1P1);
+	//printf("%f\n", resultats[1].S1P1);
 	
 
     afficherEnTete();

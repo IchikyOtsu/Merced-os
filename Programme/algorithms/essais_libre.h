@@ -61,13 +61,14 @@ int sessionEssaisLibres(float nbrTours) {
         for (int i = 0; i < MAX_LINES; i++) {
             pid_t pid = fork();
 
+            	srand(time(NULL) ^ getpid());
+
             if (pid == -1) {
                 // Gestion d'erreur
                 perror("fork failed");
                 exit(1);
             } else if (pid == 0) {
-            	
-                float *meilleursTemps = drive(60);
+                float *meilleursTemps = drive();
                 
                 
                 /*printf("\n------joueur %d -------\n", i + 1);
@@ -106,17 +107,18 @@ int sessionEssaisLibres(float nbrTours) {
                 // Libérez le sémaphore après avoir effectué les opérations sur la mémoire partagée
                 sem_post(&sharedMemorySemaphore);
                 _exit(1);
+            }else{
+                system("clear");
+            
+                printf("----%d-------------%f", resultats[i].Num, resultats[i].P1 );
+                
+                int joueurs_qui_roullent = 22;
+                char *que_afficher = "p1";
+                afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
+                sleep(1.5);
+                srand(time(NULL));
             }
-            system("clear");
             
-            printf("----%d-------------%f", resultats[i].Num, resultats[i].P1 );
-            
-            int joueurs_qui_roullent = 22;
-            char *que_afficher = "p1";
-            afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
-            
-            srand(time(NULL));
-            sleep(1);
         }
         for (int i = 0; i < MAX_LINES; i++) {
             wait(NULL);

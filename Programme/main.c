@@ -6,7 +6,50 @@
 
 #include "algorithms/essais_libre.h"
 
-int Initialize(){
+
+
+
+
+
+int selecMen() {
+
+	// Initialiser le générateur de nombres aléatoires
+	//srand(time(NULL)); 
+
+	//initialiser la mémoire partager et y metre les inforamations actuelle dedans
+	//Initialize();
+	
+
+	printf("what dou you wana do :\n");
+	printf("1 : Practice session\n");
+	printf("2 : The qualifications (Q1/Q2/Q3)\n");
+	printf("3 : The race\n");
+	
+	int choice = 0;
+	scanf("\n%d", &choice);
+	
+	
+	switch (choice){
+		case 1:
+			printf("Practice session\n");
+			sessionEssaisLibres(5);
+			break;
+		case 2:
+			printf("The qualifications (Q1/Q2/Q3)\n");
+			break;
+		case 3:
+			printf("The race\n");
+			break;
+		default:
+			printf("Invalid input pleas retry\n");
+			break;
+	}
+	
+	return 0;
+}
+
+
+int main(){
     key_t key = ftok("data/shmkeyfile", 65); // générere une clé unique
         if (key == -1) {
         perror("ftok main");
@@ -38,49 +81,32 @@ int Initialize(){
         exit(1);
     }
     
-     // opie des données dans la mémoire partagée
+     // copie des données dans la mémoire partagée
     for (int i = 0; i < ligneIndex; i++) {
         resultats[i] = joueurs[i];
     }
     //printf("test mémoire partager%s\n", resultats[2].Nom); 
-}
+    selecMen();
+    for (int i = 0; i < ligneIndex; i++) {
+        joueurs[i] = resultats[i];
+    }
+    
+    //printf("Nom du joueur modifié : %.3f\n", joueurs[1].P1);
+    // Détachement de la mémoire partagée
+    if (shmdt(resultats) == -1) {
+        perror("shmdt");
+        exit(1);
+    }
 
+    // Marquage du segment pour suppression
+    if (shmctl(shmid, IPC_RMID, NULL) == -1) {
+        perror("shmctl");
+        exit(1);
+    }
 
-
-
-int main() {
-
-	// Initialiser le générateur de nombres aléatoires
-	srand(time(NULL)); 
-
-	//initialiser la mémoire partager et y metre les inforamations actuelle dedans
-	Initialize();
-	
-
-	printf("what dou you wana do :\n");
-	printf("1 : Practice session\n");
-	printf("2 : The qualifications (Q1/Q2/Q3)\n");
-	printf("3 : The race\n");
-	
-	int choice = 0;
-	scanf("\n%d", &choice);
-	
-	
-	switch (choice){
-		case 1:
-			printf("Practice session\n");
-			sessionEssaisLibres(5);
-			break;
-		case 2:
-			printf("The qualifications (Q1/Q2/Q3)\n");
-			break;
-		case 3:
-			printf("The race\n");
-			break;
-		default:
-			printf("Invalid input pleas retry\n");
-			break;
-	}
-	
-	return 0;
+    // Sauvegarde dans le fichier CSV
+    if (sauvegarderFichierCSV("data/pilotes.csv", joueurs, ligneIndex) != 0) {
+        fprintf(stderr, "Erreur de sauvegarde du fichier CSV.\n");
+        return 1;
+    }
 }

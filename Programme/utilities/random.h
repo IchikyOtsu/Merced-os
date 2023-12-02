@@ -18,6 +18,7 @@ float zdds(int nbrTours) {
 
     for (int i = 0; i < nbrTours; i++) {
         int temps_ms = rand() % 20001 + 25000;  // Génère un temps aléatoire entre 25000 et 45000 millisecondes
+        //int temps_ms = (rand() % (20001 - 25000 + 1)) + 20001;
         float temps_s = (float)temps_ms / 1000.0;  // Convertit le temps en secondes
 
         if (temps_s < min_temps) {
