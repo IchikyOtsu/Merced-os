@@ -116,7 +116,7 @@ int sessionEssaisLibres(float nbrTours) {
                 char *que_afficher = "p1";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
                 sleep(1.5);
-                srand(time(NULL));
+                //srand(time(NULL));
             }
             
         }
