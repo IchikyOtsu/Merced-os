@@ -53,7 +53,11 @@ int sessionEssaisLibres(float nbrTours) {
         resultats[i].S2P1 = 0.0;
         resultats[i].S3P1 = 0.0;
         resultats[i].P1 = 0.0;
+        resultats[i].stand = 0;
+        resultats[i].out = 0;
     }
+    
+    
     for (int tour = 0; tour < nbrTours; tour++) {
         // Attendre que tous les processus soient prêts pour le nouveau tour
         sem_wait(&tourSemaphore);
@@ -61,7 +65,7 @@ int sessionEssaisLibres(float nbrTours) {
         for (int i = 0; i < MAX_LINES; i++) {
             pid_t pid = fork();
 
-            	srand(time(NULL) ^ getpid());
+            srand(time(NULL) ^ getpid());
 
             if (pid == -1) {
                 // Gestion d'erreur
@@ -96,8 +100,8 @@ int sessionEssaisLibres(float nbrTours) {
                 if (resultats[i].P1 == 0.0 || meilleursTemps[3] < resultats[i].P1) {
                     // Mettez à jour le temps
                     resultats[i].P1 = meilleursTemps[3]/1000;
-                    
                 }
+                
                 /*// Sauvegarde de ces informations dans la mémoire partagée
                 resultats[i].S1P1 = meilleursTemps[0];
                 resultats[i].S2P1 = meilleursTemps[1];
@@ -108,6 +112,7 @@ int sessionEssaisLibres(float nbrTours) {
                 sem_post(&sharedMemorySemaphore);
                 _exit(1);
             }else{
+            
                 system("clear");
             
                 printf("----%d-------------%f", resultats[i].Num, resultats[i].P1 );

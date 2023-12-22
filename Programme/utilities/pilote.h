@@ -6,7 +6,7 @@
 #include <string.h>
 
 #define MAX_LINES 22
-#define MAX_FIELDS 38 
+#define MAX_FIELDS 40
 
 struct Joueur {
     int nb;
@@ -50,6 +50,9 @@ struct Joueur {
     float S2R;
     float S3R;
     float RACE;
+    
+    int stand;
+    int out;
     
 };
 
@@ -213,6 +216,12 @@ int lireFichierCSV(const char *nomFichier, struct Joueur joueurs[], int *ligneIn
                 case 37:
                     joueurs[*ligneIndex].RACE= atoi(token);
                     break;
+                case 38:
+                     joueurs[*ligneIndex].stand= atoi(token);
+                     break;
+                case 39:
+                     joueurs[*ligneIndex].out= atoi(token);
+                     break;
                 default:
                     break;
             }
@@ -235,10 +244,10 @@ int sauvegarderFichierCSV(const char *nomFichier, struct Joueur joueurs[], int l
     }
 
     // Mise à jour de l'en-tête pour inclure tous les champs
-    fprintf(fichier, "nb,Num,Prenom,Nom,Team,Naissance,Nationalite,S1P1,S2P1,S3P1,P1,S1P2,S2P2,S3P2,P2,S1P3,S2P3,S3P3,P3,S1Q1,S2Q1,S3Q1,Q1,S1Q2,S2Q2,S3Q2,Q2,S1Q3,S2Q3,S3Q3,Q3,S1R,S2R,S3R,RACE\n");
+    fprintf(fichier, "nb,Num,Prenom,Nom,Team,Naissance,Nationalite,S1P1,S2P1,S3P1,P1,S1P2,S2P2,S3P2,P2,S1P3,S2P3,S3P3,P3,S1Q1,S2Q1,S3Q1,Q1,S1Q2,S2Q2,S3Q2,Q2,S1Q3,S2Q3,S3Q3,Q3,S1R,S2R,S3R,RACE,stand,out\n");
 
     for (int i = 0; i < ligneIndex; i++) {
-        fprintf(fichier, "%d,%d,%s,%s,%s,%s,%s,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f\n", 
+        fprintf(fichier, "%d,%d,%s,%s,%s,%s,%s,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%.3f,%d,%d\n", 
             joueurs[i].nb, 
             joueurs[i].Num, 
             joueurs[i].Prenom, 
@@ -273,7 +282,9 @@ int sauvegarderFichierCSV(const char *nomFichier, struct Joueur joueurs[], int l
             joueurs[i].S1R, 
             joueurs[i].S2R, 
             joueurs[i].S3R, 
-            joueurs[i].RACE);
+            joueurs[i].RACE,
+            joueurs[i].stand,
+            joueurs[i].out);
     }
 
     fclose(fichier);
