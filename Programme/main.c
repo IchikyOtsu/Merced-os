@@ -7,10 +7,6 @@
 #include "algorithms/essais_libre.h"
 
 
-
-
-
-
 int selecMen() {
 
 	// Initialiser le générateur de nombres aléatoires
@@ -32,7 +28,7 @@ int selecMen() {
 	switch (choice){
 		case 1:
 			printf("Practice session\n");
-			sessionEssaisLibres(5);
+			sessionEssaisLibres(1);
 			break;
 		case 2:
 			printf("The qualifications (Q1/Q2/Q3)\n");
