@@ -28,7 +28,7 @@ int selecMen() {
 	switch (choice){
 		case 1:
 			printf("Practice session\n");
-			sessionEssaisLibres(1);
+			sessionEssaisLibres(3);
 			break;
 		case 2:
 			printf("The qualifications (Q1/Q2/Q3)\n");

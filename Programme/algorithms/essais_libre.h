@@ -11,8 +11,9 @@
 #include "../utilities/drive.h"
 #include "../utilities/classement.h"
 #include "essais_P2.h"
+#include "essais_P3.h"
+#include "constantes.h"
 #define NOMBRE_DE_TOURS 60
-
 
 
 // Déclaration d'un sémaphore
@@ -75,7 +76,7 @@ int sessionEssaisLibres(float nbrTours) {
             } else if (pid == 0) {
                 float *meilleursTemps = drive();
                 
-                
+                sem_wait(&sharedMemorySemaphore);
                 /*printf("\n------joueur %d -------\n", i + 1);
                 printf("ID du joueur : %d\n", resultats[i].Num);
                 printf("Nom du joueur : %s\n", resultats[i].Nom);
@@ -83,25 +84,46 @@ int sessionEssaisLibres(float nbrTours) {
                 printf("temps S2 : %f\n", meilleursTemps[1]);
                 printf("temps S3 : %f\n", meilleursTemps[2]);
                 printf("temps T1 : %f\n", meilleursTemps[3]);*/
-                
-                
-                sem_wait(&sharedMemorySemaphore);
-                if (resultats[i].temps[INDEX_S1P1] == 0.0 || meilleursTemps[0]/1000 < resultats[i].temps[INDEX_S1P1]) {
-                    // Mettez à jour le temps
-                    resultats[i].temps[INDEX_S1P1] = meilleursTemps[0] / 1000;
+                if(resultats[i].out !=1){
+                    
+
+                    // Décider aléatoirement si la voiture va au stand
+                    if (resultats[i].stand != 2){
+                        if (rand() % 100 < PROBABILITE_STAND * 100) {
+                            resultats[i].stand = 1; // La voiture va au stand
+                        } else {
+                            resultats[i].stand = 0; // La voiture ne va pas au stand
+                        }
+                    }
+                    // Pas obligatoire lors des Practices
+                    /*if(tour == nbrTours-1 && resultats[i].stand == 0){
+                        resultats[i].stand = 1;
+                    }*/
+                    if (resultats[i].stand == 0 || resultats[i].stand == 2) {
+                        
+                        if (resultats[i].temps[INDEX_S1P1] == 0.0 || meilleursTemps[0]/1000 < resultats[i].temps[INDEX_S1P1]) {
+                            // Mettez à jour le temps
+                            resultats[i].temps[INDEX_S1P1] = meilleursTemps[0] / 1000;
+                        }
+                        if (resultats[i].temps[INDEX_S2P1] == 0.0 || meilleursTemps[1]/1000 < resultats[i].temps[INDEX_S2P1]) {
+                            // Mettez à jour le temps
+                            resultats[i].temps[INDEX_S2P1] = meilleursTemps[1] / 1000;
+                        }
+                        if (resultats[i].temps[INDEX_S3P1] == 0.0 || meilleursTemps[2]/ 1000 < resultats[i].temps[INDEX_S3P1]) {
+                            // Mettez à jour le temps
+                            resultats[i].temps[INDEX_S3P1] = meilleursTemps[2] / 1000;
+                        }
+                        if (resultats[i].temps[INDEX_P1] == 0.0 || meilleursTemps[3]/ 1000 < resultats[i].temps[INDEX_P1]) {
+                            // Mettez à jour le temps
+                            resultats[i].temps[INDEX_P1] = meilleursTemps[3] / 1000;
+                        }
+                    }
+                    if (rand() % 100 < PROBABILITE_OUT * 100) {
+                            resultats[i].out = 1; // La voiture va au stand
+                        } else {
+                            resultats[i].out = 0; // La voiture ne va pas au stand
+                        }
                 }
-                if (resultats[i].temps[INDEX_S2P1] == 0.0 || meilleursTemps[1]/1000 < resultats[i].temps[INDEX_S2P1]) {
-                    // Mettez à jour le temps
-                    resultats[i].temps[INDEX_S2P1] = meilleursTemps[1] / 1000;
-                }
-                if (resultats[i].temps[INDEX_S3P1] == 0.0 || meilleursTemps[2]/ 1000 < resultats[i].temps[INDEX_S3P1]) {
-                    // Mettez à jour le temps
-                    resultats[i].temps[INDEX_S3P1] = meilleursTemps[2] / 1000;
-                }
-                if (resultats[i].temps[INDEX_P1] == 0.0 || meilleursTemps[3]/ 1000 < resultats[i].temps[INDEX_P1]) {
-                    // Mettez à jour le temps
-                    resultats[i].temps[INDEX_P1] = meilleursTemps[3] / 1000;
-}
 
                 
                 /*// Sauvegarde de ces informations dans la mémoire partagée
@@ -127,8 +149,13 @@ int sessionEssaisLibres(float nbrTours) {
             }
             
         }
-        for (int i = 0; i < MAX_LINES; i++) {
+        for (int a = 0; a < MAX_LINES; a++) {
             wait(NULL);
+        }
+        for (int b = 0; b < MAX_LINES; b++) {
+            if (resultats[b].stand == 1){
+                resultats[b].stand = 2;
+            }
         }
         sem_post(&tourSemaphore);
 
@@ -144,11 +171,18 @@ int sessionEssaisLibres(float nbrTours) {
 
     // Vider le tampon d'entrée
     int c;
+    int d;
     while ((c = getchar()) != '\n' && c != EOF);
 
     // Attendre que l'utilisateur appuie sur Enter
     getchar();
     sessionEssaisLibresP2(nbrTours);
+    
+    while ((d = getchar()) != '\n' && d != EOF);
+
+    // Attendre que l'utilisateur appuie sur Enter
+    getchar();
+    sessionEssaisLibresP3(nbrTours);
 
 
     
