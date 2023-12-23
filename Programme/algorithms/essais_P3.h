@@ -82,6 +82,7 @@ int sessionEssaisLibresP3(float nbrTours) {
                 printf("temps S3 : %f\n", meilleursTemps[2]);
                 printf("temps T1 : %f\n", meilleursTemps[3]);*/
 
+		//check si la voiture est out
                 if(resultats[i].out !=1){
                     
                     // Décider aléatoirement si la voiture va au stand
@@ -115,6 +116,8 @@ int sessionEssaisLibresP3(float nbrTours) {
                             resultats[i].temps[INDEX_P3] = meilleursTemps[3] / 1000;
                         }
                     }
+                    
+                    // Décider aléatoirement si la voiture quite les practice
                     if (rand() % 100 < PROBABILITE_OUT * 100) {
                             resultats[i].out = 1; // La voiture va au stand
                         } else {
@@ -167,13 +170,9 @@ int sessionEssaisLibresP3(float nbrTours) {
 
     printf("Fin de la Practice Session\n");
 
-    // Vider le tampon d'entrée
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
 
     // Attendre que l'utilisateur appuie sur Enter
     getchar();
-    
 
 
     

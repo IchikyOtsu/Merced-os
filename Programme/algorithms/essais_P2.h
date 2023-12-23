@@ -83,10 +83,10 @@ int sessionEssaisLibresP2(float nbrTours) {
                 printf("temps S3 : %f\n", meilleursTemps[2]);
                 printf("temps T1 : %f\n", meilleursTemps[3]);*/
 
-                // Décider aléatoirement si la voiture va au stand
+                //check si la voiture est out
                 if(resultats[i].out !=1){
                     
-                    
+                    // Décider aléatoirement si la voiture va au stand
                     if (resultats[i].stand != 2){
                         if (rand() % 100 < PROBABILITE_STAND * 100) {
                             resultats[i].stand = 1; // La voiture va au stand
@@ -117,10 +117,12 @@ int sessionEssaisLibresP2(float nbrTours) {
                             resultats[i].temps[INDEX_P2] = meilleursTemps[3] / 1000;
                         }
                     }
+                    
+                    // Décider aléatoirement si la voiture quite les practice
                     if (rand() % 100 < PROBABILITE_OUT * 100) {
-                            resultats[i].out = 1; // La voiture va au stand
+                            resultats[i].out = 1; // La voiture quite les practices
                         } else {
-                            resultats[i].out = 0; // La voiture ne va pas au stand
+                            resultats[i].out = 0; // La voiture reste dans la course
                         }
                 }
 
