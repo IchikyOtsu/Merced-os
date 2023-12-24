@@ -111,6 +111,11 @@ void afficherClassement(struct Joueur *resultats, int joueurs_qui_roullent, char
         s1IndexTemps = INDEX_S1Q3;
         s2IndexTemps = INDEX_S2Q3;
         s3IndexTemps = INDEX_S3Q3;
+    }else if (strcmp(que_afficher, "r") == 0){
+        globalIndexTemps = INDEX_RACE;
+        s1IndexTemps = INDEX_S1R;
+        s2IndexTemps = INDEX_S2R;
+        s3IndexTemps = INDEX_S3R;
     }
     
     // Trouver le plus petit S1

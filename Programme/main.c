@@ -6,7 +6,7 @@
 
 #include "algorithms/essais_libre.h"
 #include"algorithms/Q1.h"
-
+#include"algorithms/race.h"
 int selecMen() {
 
 	// Initialiser le générateur de nombres aléatoires
@@ -36,6 +36,7 @@ int selecMen() {
 			break;
 		case 3:
 			printf("The race\n");
+            race(3);
 			break;
         case 4:
             return 2;
@@ -87,9 +88,7 @@ int main(){
     }
     //printf("test mémoire partager%s\n", resultats[2].Nom); 
     int ret = selecMen();
-    if(ret == 2){
-        return 0;
-    }
+    
     for (int i = 0; i < ligneIndex; i++) {
         joueurs[i] = resultats[i];
     }
@@ -111,6 +110,9 @@ int main(){
     if (sauvegarderFichierCSV("data/pilotes.csv", joueurs, ligneIndex) != 0) {
         fprintf(stderr, "Erreur de sauvegarde du fichier CSV.\n");
         return 1;
+    }
+    if(ret == 2){
+        return 0;
     }
     main();
     
