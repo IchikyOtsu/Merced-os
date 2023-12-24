@@ -1,5 +1,5 @@
-#ifndef ESSAIS_P2_H
-#define ESSAIS_P2_H
+#ifndef Q1_H
+#define Q1_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -11,12 +11,14 @@
 #include "../utilities/drive.h"
 #include "../utilities/classement.h"
 #include "constantes.h"
+#include "Q2.h"
+#include "Q3.h"
 #define NOMBRE_DE_TOURS 60
 
 
 
-
-int sessionEssaisLibresP2(float nbrTours) {
+int sessionQualif(float nbrTours) {
+    struct Joueur *temp = malloc(MAX_LINES * sizeof(struct Joueur));
     //  même clé que dans le programme principal
     key_t key = ftok("data/shmkeyfile", 65);
     if (key == -1) {
@@ -29,6 +31,7 @@ int sessionEssaisLibresP2(float nbrTours) {
         perror("shmget");
         exit(1);
     }
+
     // Attachement de la mémoire partagée
     struct Joueur *resultats = (struct Joueur *)shmat(shmid, NULL, 0);
     if ((intptr_t)resultats == -1) {
@@ -45,17 +48,16 @@ int sessionEssaisLibresP2(float nbrTours) {
         perror("sem_init");
         exit(1);
     }
-    // Initialisation de toutes les valeurs S1, S2, S3 et P2 à zéro pour chaque joueur
+    // Initialisation de toutes les valeurs S1, S2, S3 et Q1 à zéro pour chaque joueur
     for (int i = 0; i < MAX_LINES; i++) {
-        resultats[i].temps[INDEX_S1P2] = 0.0;
-        resultats[i].temps[INDEX_S2P2] = 0.0;
-        resultats[i].temps[INDEX_S3P2] = 0.0;
-        resultats[i].temps[INDEX_P2] = 0.0;
+        resultats[i].temps[INDEX_S1Q1] = 0.0;
+        resultats[i].temps[INDEX_S2Q1] = 0.0;
+        resultats[i].temps[INDEX_S3Q1] = 0.0;
+        resultats[i].temps[INDEX_Q1] = 0.0;
         resultats[i].stand = 0;
         resultats[i].out = 0;
     }
-    
-    
+
     for (int tour = 0; tour < nbrTours; tour++) {
         // Attendre que tous les processus soient prêts pour le nouveau tour
         sem_wait(&tourSemaphore);
@@ -80,10 +82,11 @@ int sessionEssaisLibresP2(float nbrTours) {
                 printf("temps S2 : %f\n", meilleursTemps[1]);
                 printf("temps S3 : %f\n", meilleursTemps[2]);
                 printf("temps T1 : %f\n", meilleursTemps[3]);*/
-
+                
                 //check si la voiture est out
                 if(resultats[i].out !=1){
                     
+
                     // Décider aléatoirement si la voiture va au stand
                     if (resultats[i].stand != 2){
                         if (rand() % 100 < PROBABILITE_STAND * 100) {
@@ -98,38 +101,38 @@ int sessionEssaisLibresP2(float nbrTours) {
                     }*/
                     if (resultats[i].stand == 0 || resultats[i].stand == 2) {
                         
-                        if (resultats[i].temps[INDEX_S1P2] == 0.0 || meilleursTemps[0]/1000 < resultats[i].temps[INDEX_S1P2]) {
+                        if (resultats[i].temps[INDEX_S1Q1] == 0.0 || meilleursTemps[0]/1000 < resultats[i].temps[INDEX_S1Q1]) {
                             // Mettez à jour le temps
-                            resultats[i].temps[INDEX_S1P2] = meilleursTemps[0] / 1000;
+                            resultats[i].temps[INDEX_S1Q1] = meilleursTemps[0] / 1000;
                         }
-                        if (resultats[i].temps[INDEX_S2P2] == 0.0 || meilleursTemps[1]/1000 < resultats[i].temps[INDEX_S2P2]) {
+                        if (resultats[i].temps[INDEX_S2Q1] == 0.0 || meilleursTemps[1]/1000 < resultats[i].temps[INDEX_S2Q1]) {
                             // Mettez à jour le temps
-                            resultats[i].temps[INDEX_S2P2] = meilleursTemps[1] / 1000;
+                            resultats[i].temps[INDEX_S2Q1] = meilleursTemps[1] / 1000;
                         }
-                        if (resultats[i].temps[INDEX_S3P2] == 0.0 || meilleursTemps[2]/ 1000 < resultats[i].temps[INDEX_S3P2]) {
+                        if (resultats[i].temps[INDEX_S3Q1] == 0.0 || meilleursTemps[2]/ 1000 < resultats[i].temps[INDEX_S3Q1]) {
                             // Mettez à jour le temps
-                            resultats[i].temps[INDEX_S3P2] = meilleursTemps[2] / 1000;
+                            resultats[i].temps[INDEX_S3Q1] = meilleursTemps[2] / 1000;
                         }
-                        if (resultats[i].temps[INDEX_P2] == 0.0 || meilleursTemps[3]/ 1000 < resultats[i].temps[INDEX_P2]) {
+                        if (resultats[i].temps[INDEX_Q1] == 0.0 || meilleursTemps[3]/ 1000 < resultats[i].temps[INDEX_Q1]) {
                             // Mettez à jour le temps
-                            resultats[i].temps[INDEX_P2] = meilleursTemps[3] / 1000;
+                            resultats[i].temps[INDEX_Q1] = meilleursTemps[3] / 1000;
                         }
                     }
                     
                     // Décider aléatoirement si la voiture quite les practice
                     if (rand() % 100 < PROBABILITE_OUT * 100) {
-                            resultats[i].out = 1; // La voiture quite les practices
+                            resultats[i].out = 1; // La voiture va au stand
                         } else {
-                            resultats[i].out = 0; // La voiture reste dans la course
+                            resultats[i].out = 0; // La voiture ne va pas au stand
                         }
                 }
 
                 
                 /*// Sauvegarde de ces informations dans la mémoire partagée
-                resultats[i].S1P2 = meilleursTemps[0];
-                resultats[i].S2P2 = meilleursTemps[1];
-                resultats[i].S3P2 = meilleursTemps[2];
-                resultats[i].P2 = meilleursTemps[3];
+                resultats[i].S1Q1 = meilleursTemps[0];
+                resultats[i].S2Q1 = meilleursTemps[1];
+                resultats[i].S3Q1 = meilleursTemps[2];
+                resultats[i].Q1 = meilleursTemps[3];
                 */
                 // Libérez le sémaphore après avoir effectué les opérations sur la mémoire partagée
                 sem_post(&sharedMemorySemaphore);
@@ -138,12 +141,11 @@ int sessionEssaisLibresP2(float nbrTours) {
             
                 system("clear");
             
-                printf("----%d-------------%f", resultats[i].Num, resultats[i].temps[INDEX_P2] );
+                printf("----%d-------------%f", resultats[i].Num, resultats[i].temps[INDEX_Q1] );
                 
                 int joueurs_qui_roullent = 22;
-                char *que_afficher = "p2";
+                char *que_afficher = "q1";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
-                
                 sleep(1.5);
                 //srand(time(NULL));
             }
@@ -160,13 +162,40 @@ int sessionEssaisLibresP2(float nbrTours) {
         sem_post(&tourSemaphore);
 
     }
+    //triage pour l'élimination.
+    qsort(resultats, MAX_LINES, sizeof(struct Joueur), comparerResultatsglobal);
 
     // Sauvegarde dans le fichier CSV
 
     // Détruire le sémaphore
     sem_destroy(&sharedMemorySemaphore);
     sem_destroy(&tourSemaphore);
+
     
+    printf("Appuyez sur la touche Enter pour continuer en Q2\n");
+
+    // Vider le tampon d'entrée
+    int c;
+    int d;
+    while ((c = getchar()) != '\n' && c != EOF);
+
+    // Attendre que l'utilisateur appuie sur Enter
+    getchar();
+    sessionQualif2(nbrTours);
+
+    
+    
+    printf("Appuyez sur la touche Enter pour continuer en Q3\n");
+    
+    while ((d = getchar()) != '\n' && d != EOF);
+
+    // Attendre que l'utilisateur appuie sur Enter
+    getchar();
+    sessionQualif3(nbrTours);
+
+
+
 }
+
 
 #endif

@@ -57,6 +57,17 @@ int comparerResultatsS3(const void *a, const void *b) {
     if (joueurA->temps[s3IndexTemps] > joueurB->temps[s3IndexTemps]) return 1;
     return 0;
 }
+int compNum(const void *a, const void *b) {
+    struct Joueur *joueurA = (struct Joueur *)a;
+    struct Joueur *joueurB = (struct Joueur *)b;
+    if (joueurA->Num < joueurB->Num) return -1;
+    if (joueurA->Num > joueurB->Num) return 1;
+    return 0;
+}
+void trierJoueursParNum(struct Joueur *resultat, int nombreDeJoueurs) {
+    qsort(resultat, nombreDeJoueurs, sizeof(struct Joueur), compNum);
+}
+
 
 void afficherClassement(struct Joueur *resultats, int joueurs_qui_roullent, char *que_afficher) {
     struct Joueur *temp = malloc(MAX_LINES * sizeof(struct Joueur));
@@ -79,11 +90,27 @@ void afficherClassement(struct Joueur *resultats, int joueurs_qui_roullent, char
         s1IndexTemps = INDEX_S1P3;
         s2IndexTemps = INDEX_S2P3;
         s3IndexTemps = INDEX_S3P3;
-    } else {
+    } else if (strcmp(que_afficher, "p1") == 0){
         globalIndexTemps = INDEX_P1;
         s1IndexTemps = INDEX_S1P1;
         s2IndexTemps = INDEX_S2P1;
         s3IndexTemps = INDEX_S3P1;
+    }else if (strcmp(que_afficher, "q1") == 0){
+        globalIndexTemps = INDEX_Q1;
+        s1IndexTemps = INDEX_S1Q1;
+        s2IndexTemps = INDEX_S2Q1;
+        s3IndexTemps = INDEX_S3Q1;
+    }
+    else if (strcmp(que_afficher, "q2") == 0){
+        globalIndexTemps = INDEX_Q2;
+        s1IndexTemps = INDEX_S1Q2;
+        s2IndexTemps = INDEX_S2Q2;
+        s3IndexTemps = INDEX_S3Q2;
+    }else if (strcmp(que_afficher, "q3") == 0){
+        globalIndexTemps = INDEX_Q3;
+        s1IndexTemps = INDEX_S1Q3;
+        s2IndexTemps = INDEX_S2Q3;
+        s3IndexTemps = INDEX_S3Q3;
     }
     
     // Trouver le plus petit S1

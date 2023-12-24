@@ -13,9 +13,7 @@
 #include "constantes.h"
 #define NOMBRE_DE_TOURS 60
 
-// Déclaration d'un sémaphore
-sem_t sharedMemorySemaphore;
-sem_t tourSemaphore;
+
 
 int sessionEssaisLibresP3(float nbrTours) {
     //  même clé que dans le programme principal
@@ -145,6 +143,7 @@ int sessionEssaisLibresP3(float nbrTours) {
                 int joueurs_qui_roullent = 22;
                 char *que_afficher = "p3";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
+                
                 sleep(1.5);
                 //srand(time(NULL));
             }

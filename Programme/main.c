@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #include "algorithms/essais_libre.h"
-
+#include"algorithms/Q1.h"
 
 int selecMen() {
 
@@ -16,11 +16,11 @@ int selecMen() {
 	//Initialize();
 	
 
-	printf("what dou you wana do :\n");
+	printf("What do you want to do ? :\n");
 	printf("1 : Practice session\n");
 	printf("2 : The qualifications (Q1/Q2/Q3)\n");
 	printf("3 : The race\n");
-	
+	printf("4 : Exit\n");
 	int choice = 0;
 	scanf("\n%d", &choice);
 	
@@ -28,14 +28,18 @@ int selecMen() {
 	switch (choice){
 		case 1:
 			printf("Practice session\n");
-			sessionEssaisLibres(3);
+			sessionEssaisLibres(1);
 			break;
 		case 2:
 			printf("The qualifications (Q1/Q2/Q3)\n");
+            sessionQualif(1);
 			break;
 		case 3:
 			printf("The race\n");
 			break;
+        case 4:
+            return 2;
+            break;
 		default:
 			printf("Invalid input pleas retry\n");
 			break;
@@ -82,7 +86,10 @@ int main(){
         resultats[i] = joueurs[i];
     }
     //printf("test mémoire partager%s\n", resultats[2].Nom); 
-    selecMen();
+    int ret = selecMen();
+    if(ret == 2){
+        return 0;
+    }
     for (int i = 0; i < ligneIndex; i++) {
         joueurs[i] = resultats[i];
     }
@@ -105,6 +112,6 @@ int main(){
         fprintf(stderr, "Erreur de sauvegarde du fichier CSV.\n");
         return 1;
     }
-    
+    main();
     
 }

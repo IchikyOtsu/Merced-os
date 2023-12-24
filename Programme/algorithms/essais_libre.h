@@ -16,11 +16,10 @@
 #define NOMBRE_DE_TOURS 60
 
 
-// Déclaration d'un sémaphore
-sem_t sharedMemorySemaphore;
-sem_t tourSemaphore;
+
 
 int sessionEssaisLibres(float nbrTours) {
+
     //  même clé que dans le programme principal
     key_t key = ftok("data/shmkeyfile", 65);
     if (key == -1) {
@@ -49,6 +48,9 @@ int sessionEssaisLibres(float nbrTours) {
         perror("sem_init");
         exit(1);
     }
+
+    //remise en ordre pour une nouvelle session
+    trierJoueursParNum(resultats,22);
     // Initialisation de toutes les valeurs S1, S2, S3 et P1 à zéro pour chaque joueur
     for (int i = 0; i < MAX_LINES; i++) {
         resultats[i].temps[INDEX_S1P1] = 0.0;
@@ -148,6 +150,7 @@ int sessionEssaisLibres(float nbrTours) {
                 int joueurs_qui_roullent = 22;
                 char *que_afficher = "p1";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
+                
                 sleep(1.5);
                 //srand(time(NULL));
             }
@@ -164,8 +167,6 @@ int sessionEssaisLibres(float nbrTours) {
         sem_post(&tourSemaphore);
 
     }
-
-    // Sauvegarde dans le fichier CSV
 
     // Détruire le sémaphore
     sem_destroy(&sharedMemorySemaphore);
@@ -190,6 +191,7 @@ int sessionEssaisLibres(float nbrTours) {
     // Attendre que l'utilisateur appuie sur Enter
     getchar();
     sessionEssaisLibresP3(nbrTours);
+
 
 
     
