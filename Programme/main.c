@@ -3,11 +3,16 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "algorithms/essais_libre.h"
 #include"algorithms/Q1.h"
 #include"algorithms/race.h"
-int selecMen() {
+#include"utilities/circuits.h"
+
+
+
+int selecMen(int nbrTourRace) {
 
 	// Initialiser le générateur de nombres aléatoires
 	//srand(time(NULL)); 
@@ -36,7 +41,7 @@ int selecMen() {
 			break;
 		case 3:
 			printf("The race\n");
-            race(3);
+            		race(nbrTourRace);
 			break;
         case 4:
             return 2;
@@ -50,12 +55,76 @@ int selecMen() {
 }
 
 
-int main(){
+int main(int argc, char **argv){
     key_t key = ftok("data/shmkeyfile", 65); // générere une clé unique
         if (key == -1) {
         perror("ftok main");
         exit(1);
     }
+    
+    // Mettre test comme variable dans argv[1], si l'utilisateur n'a pas mis de parametres au porgrame
+    char userRaceInput[50];  
+    
+    if (argc <= 1) {
+	strcpy(userRaceInput, "test");
+	argv[1] = userRaceInput;
+    }
+
+
+    
+    
+    // récuperer les données des circuits
+    struct Circuits circuits[MAX_LIGNES];
+    int nombreCircuits = lireFichierCSV_circuits("data/circuits.csv", circuits);
+    if (nombreCircuits == -1) {
+        return 1;  // Erreur lors de l'ouverture du fichier
+    }
+    
+    
+    //vérifier que le circuit existe bien et assigner le nombre de tour a la course
+    int nbrTourRace = 0;
+    int found = 0;
+    
+    for (int i = 0; i < nombreCircuits; i++) {
+	if (strcasecmp(argv[1], circuits[i].Race) == 0){  //strcasecmp => compare sans case sensitive
+        	nbrTourRace = round(300/circuits[i].Taille);  // calculer le nombre de tours
+        	found = 1;
+        }
+    }
+    
+    while (found == 0){
+       	system("clear");
+    	printf("Enter a correct place for the race from this list :\n");
+    	for (int i = 0; i < nombreCircuits; i++) {
+    		printf("- %s\n", circuits[i].Race);
+    	}
+	printf("=> ");
+    	fgets(argv[1], 50, stdin);
+    	printf("%s", argv[1]);
+    	if (argv[1] == NULL) {
+        	fprintf(stderr, "Erreur d'allocation mémoire\n");
+        	return 1;
+    	}
+    	
+    	//enlever le /n à la fin du fgets
+    	size_t len = strlen(argv[1]);
+        if (len > 0 && argv[1][len - 1] == '\n') {
+            argv[1][len - 1] = '\0';
+        }
+	
+	//check si la course existe bien
+	for (int i = 0; i < nombreCircuits; i++) {
+		if (strcasecmp(argv[1], circuits[i].Race) == 0){  //strcasecmp => compare sans case sensitive
+			nbrTourRace = round(300/circuits[i].Taille); // calculer le nombre de tours
+			found = 1;
+		}
+	}
+    }
+    
+    system("clear");
+    printf("\nYou are competing in \033[1;32m%s\033[0m and will do \033[1;32m%d\033[0m laps in the race.\n\n",argv[1], nbrTourRace);
+    
+    
     
     int shmid;
     struct Joueur joueurs[MAX_LINES];  // Assurez-vous que MAX_LINES est défini
@@ -87,7 +156,7 @@ int main(){
         resultats[i] = joueurs[i];
     }
     //printf("test mémoire partager%s\n", resultats[2].Nom); 
-    int ret = selecMen();
+    int ret = selecMen(nbrTourRace);
     
     for (int i = 0; i < ligneIndex; i++) {
         joueurs[i] = resultats[i];
@@ -114,6 +183,6 @@ int main(){
     if(ret == 2){
         return 0;
     }
-    main();
+    main(argc, argv);
     
 }

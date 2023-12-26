@@ -18,7 +18,7 @@ float *drive(){
 
 	//génerére le temps de ce tour dans un tableau
         float temps[4] = {0, 0, 0, 0};
-        genererTempsAleatoires(20001, 25000, temps);
+        genererTempsAleatoires(25000, 45000, temps);
 
 	//sauver les temps si ils sont meilleur que les précedents
         if (meilleursTemps[0] == 0 || meilleursTemps[0] > temps[0]){
