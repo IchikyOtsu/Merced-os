@@ -138,12 +138,12 @@ int sessionQualif3(float nbrTours) {
             }else{
             
                 system("clear");
-            
-                printf("----%d-------------%f", resultats[i].Num, resultats[i].temps[INDEX_Q3] );
+
                 
                 int joueurs_qui_roullent = 10;
                 char *que_afficher = "q3";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
+                printf("\n\nJoueur N°%d à roullé un temps de : %fs\n\n", resultats[i].Num, resultats[i].temps[INDEX_P1] );
                 sleep(1.5);
                 //srand(time(NULL));
             }

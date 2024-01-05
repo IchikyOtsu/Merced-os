@@ -138,12 +138,12 @@ int race(float nbrTours) {
             }else{
             
                 system("clear");
-            
-                printf("----%d-------------%f", resultats[i].Num, resultats[i].temps[INDEX_RACE] );
+
                 
                 int joueurs_qui_roullent = 20;
                 char *que_afficher = "r";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
+                printf("\n\nJoueur N°%d à roullé un temps de : %fs\n\n", resultats[i].Num, resultats[i].temps[INDEX_P1] );
                 sleep(1.5);
                 //srand(time(NULL));
             }
@@ -168,8 +168,21 @@ int race(float nbrTours) {
     sem_destroy(&sharedMemorySemaphore);
     sem_destroy(&tourSemaphore);
 
+    int c;
+    int d;
+    printf("\nFin de la course, tapez 'enter' pour voir les points"); 
     
-    printf("Fin de la course\n");  
+    while ((c = getchar()) != '\n' && c != EOF);
+    getchar();
+    
+    system("clear");         
+    int joueurs_qui_roullent = 20;
+    char *que_afficher = "rPoints";
+    afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
+
+    printf("\nTapez 'enter' pour retourner au menu"); 
+    while ((c = getchar()) != '\n' && c != EOF);
+
 
 
 

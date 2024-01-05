@@ -33,11 +33,11 @@ int selecMen(int nbrTourRace) {
 	switch (choice){
 		case 1:
 			printf("Practice session\n");
-			sessionEssaisLibres(1);
+			sessionEssaisLibres(2);
 			break;
 		case 2:
 			printf("The qualifications (Q1/Q2/Q3)\n");
-            sessionQualif(1);
+			sessionQualif(2);
 			break;
 		case 3:
 			printf("The race\n");
