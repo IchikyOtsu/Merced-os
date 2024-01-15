@@ -144,12 +144,12 @@ int sessionEssaisLibres(float nbrTours) {
             }else{
             
                 system("clear");
-            
-                printf("----%d-------------%f", resultats[i].Num, resultats[i].temps[INDEX_P1] );
-                
+
                 int joueurs_qui_roullent = 22;
                 char *que_afficher = "p1";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
+                
+                printf("\n\nJoueur N°%d à roullé un temps de : %fs\n\n", resultats[i].Num, resultats[i].temps[INDEX_P1] );
                 
                 sleep(1.5);
                 //srand(time(NULL));
@@ -172,7 +172,7 @@ int sessionEssaisLibres(float nbrTours) {
     sem_destroy(&sharedMemorySemaphore);
     sem_destroy(&tourSemaphore);
 
-    printf("Appuyez sur la touche Enter pour continuer en P2\n");
+    printf("\nAppuyez sur la touche Enter pour continuer en P2\n");
 
     // Vider le tampon d'entrée
     int c;
@@ -184,14 +184,19 @@ int sessionEssaisLibres(float nbrTours) {
     sessionEssaisLibresP2(nbrTours);
     
     
-    printf("Appuyez sur la touche Enter pour continuer en P3\n");
+    printf("\nAppuyez sur la touche Enter pour continuer en P3\n");
+
+    // Vider le tampon d'entrée
+    while ((c = getchar()) != '\n' && c != EOF);
+
+    // Attendre que l'utilisateur appuie sur Enter
+    sessionEssaisLibresP3(nbrTours);
     
-    while ((d = getchar()) != '\n' && d != EOF);
+    printf("\nFin de la Practice Session\n");
+
 
     // Attendre que l'utilisateur appuie sur Enter
     getchar();
-    sessionEssaisLibresP3(nbrTours);
-
 
 
     

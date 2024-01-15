@@ -140,12 +140,11 @@ int sessionQualif(float nbrTours) {
             }else{
             
                 system("clear");
-            
-                printf("----%d-------------%f", resultats[i].Num, resultats[i].temps[INDEX_Q1] );
                 
                 int joueurs_qui_roullent = 22;
                 char *que_afficher = "q1";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
+                printf("\n\nJoueur N°%d à roullé un temps de : %fs\n\n", resultats[i].Num, resultats[i].temps[INDEX_P1] );
                 sleep(1.5);
                 //srand(time(NULL));
             }
@@ -172,7 +171,7 @@ int sessionQualif(float nbrTours) {
     sem_destroy(&tourSemaphore);
 
     
-    printf("Appuyez sur la touche Enter pour continuer en Q2\n");
+    printf("\nAppuyez sur la touche Enter pour continuer en Q2\n");
 
     // Vider le tampon d'entrée
     int c;
@@ -185,13 +184,18 @@ int sessionQualif(float nbrTours) {
 
     
     
-    printf("Appuyez sur la touche Enter pour continuer en Q3\n");
+    printf("\nAppuyez sur la touche Enter pour continuer en Q3\n");
     
-    while ((d = getchar()) != '\n' && d != EOF);
 
     // Attendre que l'utilisateur appuie sur Enter
     getchar();
     sessionQualif3(nbrTours);
+    
+    
+    printf("\nFin des qualifications\n");
+
+    // Attendre que l'utilisateur appuie sur Enter
+    getchar();
 
 
 
