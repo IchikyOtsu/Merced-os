@@ -5,12 +5,8 @@
 #include <stdint.h>
 
 #include "algorithms/essais_libre.h"
-
-
-
-
-
-
+#include"algorithms/Q1.h"
+#include"algorithms/race.h"
 int selecMen() {
 
 	// Initialiser le générateur de nombres aléatoires
@@ -20,11 +16,11 @@ int selecMen() {
 	//Initialize();
 	
 
-	printf("what dou you wana do :\n");
+	printf("What do you want to do ? :\n");
 	printf("1 : Practice session\n");
 	printf("2 : The qualifications (Q1/Q2/Q3)\n");
 	printf("3 : The race\n");
-	
+	printf("4 : Exit\n");
 	int choice = 0;
 	scanf("\n%d", &choice);
 	
@@ -32,14 +28,19 @@ int selecMen() {
 	switch (choice){
 		case 1:
 			printf("Practice session\n");
-			sessionEssaisLibres(5);
+			sessionEssaisLibres(1);
 			break;
 		case 2:
 			printf("The qualifications (Q1/Q2/Q3)\n");
+            sessionQualif(1);
 			break;
 		case 3:
 			printf("The race\n");
+            race(3);
 			break;
+        case 4:
+            return 2;
+            break;
 		default:
 			printf("Invalid input pleas retry\n");
 			break;
@@ -86,7 +87,8 @@ int main(){
         resultats[i] = joueurs[i];
     }
     //printf("test mémoire partager%s\n", resultats[2].Nom); 
-    selecMen();
+    int ret = selecMen();
+    
     for (int i = 0; i < ligneIndex; i++) {
         joueurs[i] = resultats[i];
     }
@@ -109,4 +111,9 @@ int main(){
         fprintf(stderr, "Erreur de sauvegarde du fichier CSV.\n");
         return 1;
     }
+    if(ret == 2){
+        return 0;
+    }
+    main();
+    
 }

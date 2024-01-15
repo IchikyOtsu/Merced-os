@@ -1,5 +1,5 @@
-#ifndef ESSAIS_LIBRE_H
-#define ESSAIS_LIBRE_H
+#ifndef ESSAIS_P2_H
+#define ESSAIS_P2_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -10,16 +10,13 @@
 #include "../utilities/random.h"
 #include "../utilities/drive.h"
 #include "../utilities/classement.h"
-#include "essais_P2.h"
-#include "essais_P3.h"
 #include "constantes.h"
 #define NOMBRE_DE_TOURS 60
 
 
 
 
-int sessionEssaisLibres(float nbrTours) {
-
+int sessionEssaisLibresP2(float nbrTours) {
     //  même clé que dans le programme principal
     key_t key = ftok("data/shmkeyfile", 65);
     if (key == -1) {
@@ -48,15 +45,12 @@ int sessionEssaisLibres(float nbrTours) {
         perror("sem_init");
         exit(1);
     }
-
-    //remise en ordre pour une nouvelle session
-    trierJoueursParNum(resultats,22);
-    // Initialisation de toutes les valeurs S1, S2, S3 et P1 à zéro pour chaque joueur
+    // Initialisation de toutes les valeurs S1, S2, S3 et P2 à zéro pour chaque joueur
     for (int i = 0; i < MAX_LINES; i++) {
-        resultats[i].temps[INDEX_S1P1] = 0.0;
-        resultats[i].temps[INDEX_S2P1] = 0.0;
-        resultats[i].temps[INDEX_S3P1] = 0.0;
-        resultats[i].temps[INDEX_P1] = 0.0;
+        resultats[i].temps[INDEX_S1P2] = 0.0;
+        resultats[i].temps[INDEX_S2P2] = 0.0;
+        resultats[i].temps[INDEX_S3P2] = 0.0;
+        resultats[i].temps[INDEX_P2] = 0.0;
         resultats[i].stand = 0;
         resultats[i].out = 0;
     }
@@ -86,11 +80,10 @@ int sessionEssaisLibres(float nbrTours) {
                 printf("temps S2 : %f\n", meilleursTemps[1]);
                 printf("temps S3 : %f\n", meilleursTemps[2]);
                 printf("temps T1 : %f\n", meilleursTemps[3]);*/
-                
+
                 //check si la voiture est out
                 if(resultats[i].out !=1){
                     
-
                     // Décider aléatoirement si la voiture va au stand
                     if (resultats[i].stand != 2){
                         if (rand() % 100 < PROBABILITE_STAND * 100) {
@@ -105,38 +98,38 @@ int sessionEssaisLibres(float nbrTours) {
                     }*/
                     if (resultats[i].stand == 0 || resultats[i].stand == 2) {
                         
-                        if (resultats[i].temps[INDEX_S1P1] == 0.0 || meilleursTemps[0]/1000 < resultats[i].temps[INDEX_S1P1]) {
+                        if (resultats[i].temps[INDEX_S1P2] == 0.0 || meilleursTemps[0]/1000 < resultats[i].temps[INDEX_S1P2]) {
                             // Mettez à jour le temps
-                            resultats[i].temps[INDEX_S1P1] = meilleursTemps[0] / 1000;
+                            resultats[i].temps[INDEX_S1P2] = meilleursTemps[0] / 1000;
                         }
-                        if (resultats[i].temps[INDEX_S2P1] == 0.0 || meilleursTemps[1]/1000 < resultats[i].temps[INDEX_S2P1]) {
+                        if (resultats[i].temps[INDEX_S2P2] == 0.0 || meilleursTemps[1]/1000 < resultats[i].temps[INDEX_S2P2]) {
                             // Mettez à jour le temps
-                            resultats[i].temps[INDEX_S2P1] = meilleursTemps[1] / 1000;
+                            resultats[i].temps[INDEX_S2P2] = meilleursTemps[1] / 1000;
                         }
-                        if (resultats[i].temps[INDEX_S3P1] == 0.0 || meilleursTemps[2]/ 1000 < resultats[i].temps[INDEX_S3P1]) {
+                        if (resultats[i].temps[INDEX_S3P2] == 0.0 || meilleursTemps[2]/ 1000 < resultats[i].temps[INDEX_S3P2]) {
                             // Mettez à jour le temps
-                            resultats[i].temps[INDEX_S3P1] = meilleursTemps[2] / 1000;
+                            resultats[i].temps[INDEX_S3P2] = meilleursTemps[2] / 1000;
                         }
-                        if (resultats[i].temps[INDEX_P1] == 0.0 || meilleursTemps[3]/ 1000 < resultats[i].temps[INDEX_P1]) {
+                        if (resultats[i].temps[INDEX_P2] == 0.0 || meilleursTemps[3]/ 1000 < resultats[i].temps[INDEX_P2]) {
                             // Mettez à jour le temps
-                            resultats[i].temps[INDEX_P1] = meilleursTemps[3] / 1000;
+                            resultats[i].temps[INDEX_P2] = meilleursTemps[3] / 1000;
                         }
                     }
                     
                     // Décider aléatoirement si la voiture quite les practice
                     if (rand() % 100 < PROBABILITE_OUT * 100) {
-                            resultats[i].out = 1; // La voiture va au stand
+                            resultats[i].out = 1; // La voiture quite les practices
                         } else {
-                            resultats[i].out = 0; // La voiture ne va pas au stand
+                            resultats[i].out = 0; // La voiture reste dans la course
                         }
                 }
 
                 
                 /*// Sauvegarde de ces informations dans la mémoire partagée
-                resultats[i].S1P1 = meilleursTemps[0];
-                resultats[i].S2P1 = meilleursTemps[1];
-                resultats[i].S3P1 = meilleursTemps[2];
-                resultats[i].P1 = meilleursTemps[3];
+                resultats[i].S1P2 = meilleursTemps[0];
+                resultats[i].S2P2 = meilleursTemps[1];
+                resultats[i].S3P2 = meilleursTemps[2];
+                resultats[i].P2 = meilleursTemps[3];
                 */
                 // Libérez le sémaphore après avoir effectué les opérations sur la mémoire partagée
                 sem_post(&sharedMemorySemaphore);
@@ -145,10 +138,10 @@ int sessionEssaisLibres(float nbrTours) {
             
                 system("clear");
             
-                printf("----%d-------------%f", resultats[i].Num, resultats[i].temps[INDEX_P1] );
+                printf("----%d-------------%f", resultats[i].Num, resultats[i].temps[INDEX_P2] );
                 
                 int joueurs_qui_roullent = 22;
-                char *que_afficher = "p1";
+                char *que_afficher = "p2";
                 afficherClassement(resultats, joueurs_qui_roullent, que_afficher);
                 
                 sleep(1.5);
@@ -168,32 +161,11 @@ int sessionEssaisLibres(float nbrTours) {
 
     }
 
+    // Sauvegarde dans le fichier CSV
+
     // Détruire le sémaphore
     sem_destroy(&sharedMemorySemaphore);
     sem_destroy(&tourSemaphore);
-
-    printf("Appuyez sur la touche Enter pour continuer en P2\n");
-
-    // Vider le tampon d'entrée
-    int c;
-    int d;
-    while ((c = getchar()) != '\n' && c != EOF);
-
-    // Attendre que l'utilisateur appuie sur Enter
-    getchar();
-    sessionEssaisLibresP2(nbrTours);
-    
-    
-    printf("Appuyez sur la touche Enter pour continuer en P3\n");
-    
-    while ((d = getchar()) != '\n' && d != EOF);
-
-    // Attendre que l'utilisateur appuie sur Enter
-    getchar();
-    sessionEssaisLibresP3(nbrTours);
-
-
-
     
 }
 
