@@ -3,7 +3,7 @@ gcc -o main main.c -lm
 ./main 
 
 Pour changer le nombre de tour, lors d'un éventuel test, vous pouvez remplacer "nbrTourRace" dans le switch du main.c : 
-
+```
 switch (choice){
 		case 1:
 			printf("Practice session\n");
@@ -17,3 +17,4 @@ switch (choice){
 			printf("The race\n");
             		race(nbrTourRace);
 			break;
+```
