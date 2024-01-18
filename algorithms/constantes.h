@@ -7,4 +7,8 @@
 #define PROBABILITE_OUT 0.01// 1% de chance d'abandonner la scéance
 sem_t sharedMemorySemaphore;
 sem_t tourSemaphore;
+
+int circuitSelectionDone = 0;
+int nbrTourRace = 0;
+int found = 0;
 #endif
